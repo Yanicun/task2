@@ -1,7 +1,22 @@
+import logging
 import os
+import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
+
+def mask_customer_name(record):
+    # The customer details URL contains the reader's name.
+    message = record.getMessage()
+    masked = re.sub(r'(/loans/customers/details/)[^\s]+', r'\1****', message)
+    if masked != message:
+        record.msg = masked
+        record.args = ()
+    return True
+
+
+logging.getLogger('werkzeug').addFilter(mask_customer_name)
 
 
 # Database Setup
