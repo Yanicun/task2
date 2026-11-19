@@ -85,12 +85,10 @@ def create_loan():
 
             # Redirect to the list of loans
             return redirect(url_for('loans.list_loans'))
-        except Exception as e:
+        except Exception:
             db.session.rollback()
-            error_message = f'Error creating loan: {str(e)}'
-            # Log the error message
-            print('Error creating loan:', error_message)
-            return jsonify({'error': error_message}), 500
+            print('Error creating loan')
+            return jsonify({'error': 'Error creating loan'}), 500
 
     # GET request, render the form
     print('GET request, render the form')
@@ -157,11 +155,10 @@ def delete_loan(loan_id):
         print('Loan deleted successfully')
         # Redirect to the list of loans
         return redirect(url_for('loans.list_loans'))
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        error_message = f'Error deleting loan: {str(e)}'
-        print('Error deleting loan:', error_message)  # Log the error message
-        return jsonify({'error': error_message}), 500
+        print('Error deleting loan')
+        return jsonify({'error': 'Error deleting loan'}), 500
 
 
 # Route to fetch loan details by ID
